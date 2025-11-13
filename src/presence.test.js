@@ -16,9 +16,9 @@ const usersAccounts = new SharedArray('users accounts', function () {
 
 
 export const options = {
-  vus: 1,
-  duration: '60s',
-  iterations: 10
+  vus: 2,
+  duration: '300s',
+  iterations: 10000
 };
 
 
@@ -27,12 +27,12 @@ export function setup() {
   usersAccounts.forEach(userAccount =>{
     let authenticatedUser = {...userAccount}
     const loginResponseCookies = callUsernamePassword(authenticatedUser.username, authenticatedUser.password)
-
     const skey = loginResponseCookies.skey[0].value
     authenticatedUser.skey = skey
 
     const anti_csrf_cookie = loginResponseCookies["anti-csrf-cookie"][0].value
     authenticatedUser.anti_csrf_cookie = anti_csrf_cookie
+
 
     const access_token = callIdmToken(skey, anti_csrf_cookie)
     authenticatedUser.access_token = access_token

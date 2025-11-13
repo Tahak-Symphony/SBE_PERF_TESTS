@@ -28,12 +28,15 @@ export const options = {
 };
 
 function callSalt(username){
+    console.log("callSalt for username:", username)
     const headers = {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"}
     const res = http.post(SALT_URL, `userName=${username}`, {headers})
+    console.log("salt result", res.json("salt"))
     return res.json("salt")
 }
 
 export function callUsernamePassword(username, password) {
+  console.log("call username password to authenticate")
   const salt = callSalt(username)
   const derivedKey = derivePbkdf2Key(password, salt, 10000, 256)
 
@@ -46,6 +49,7 @@ export function callUsernamePassword(username, password) {
     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
   }
   const res = http.post(LOGIN_URL, body, {headers} )
+  console.log("auth coockies", res.cookies)
   return res.cookies
 }
 
